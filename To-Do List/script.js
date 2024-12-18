@@ -1,3 +1,5 @@
+//JavaScript Code for the To-Do List//
+
 const userTaskInput = document.getElementById('userTaskInput');
 const addTaskButton = document.getElementById('addTaskButton');
 const taskList = document.getElementById('taskList');
@@ -69,6 +71,9 @@ function createTaskItem(formResult) {
         taskElement.insertBefore(inputField, editButton);
         editButton.textContent = 'Save';
 
+        const inputFieldKey = `task-li-${todoStorage.length - 1}-input-field-styles`;
+        saveInputFieldStyles(inputField, inputFieldKey);
+
         editButton.addEventListener('click', () => {
             const newTaskText = inputField.value.trim();
             if (newTaskText) {
@@ -92,6 +97,7 @@ function createTaskItem(formResult) {
             todoStorage.splice(index, 1);
             localStorage.setItem('todo-list', JSON.stringify(todoStorage));
             localStorage.removeItem(`task-li-${index}-styles`);
+            localStorage.removeItem(`task-li-${index}-input-field-styles`); 
         }
         taskElement.remove();
     });
@@ -112,8 +118,33 @@ function saveElementStyles(element, key) {
     localStorage.setItem(key, JSON.stringify(stylesToSave));
 }
 
+function saveInputFieldStyles(inputField, key) {
+    const stylesToSave = {
+        width: inputField.style.width,
+        backgroundColor: inputField.style.backgroundColor,
+        textAlign: inputField.style.textAlign
+    };
+    localStorage.setItem(key, JSON.stringify(stylesToSave));
+}
+
+function applyElementStyles(element, key) {
+    const storedStyles = localStorage.getItem(key);
+    if (storedStyles) {
+        const styles = JSON.parse(storedStyles);
+        Object.assign(element.style, styles);
+    }
+}
+
+function applyInputFieldStyles(inputField, key) {
+    const storedStyles = localStorage.getItem(key);
+    if (storedStyles) {
+        const styles = JSON.parse(storedStyles);
+        Object.assign(inputField.style, styles);
+    }
+}
+
 function readTodoStorage(todoStorage) {
-    taskList.innerHTML = '';  // Clear the existing tasks in the list
+    taskList.innerHTML = '';  
     for (let i = 0; i < todoStorage.length; i++) {
         const taskElement = document.createElement('li');
         taskList.appendChild(taskElement);
@@ -143,6 +174,9 @@ function readTodoStorage(todoStorage) {
             taskElement.insertBefore(inputField, editButton);
             editButton.textContent = 'Save';
 
+            const inputFieldKey = `task-li-${i}-input-field-styles`;
+            applyInputFieldStyles(inputField, inputFieldKey);
+
             editButton.addEventListener('click', () => {
                 const newTaskText = inputField.value.trim();
                 if (newTaskText) {
@@ -166,6 +200,7 @@ function readTodoStorage(todoStorage) {
                 todoStorage.splice(index, 1);
                 localStorage.setItem('todo-list', JSON.stringify(todoStorage));
                 localStorage.removeItem(`task-li-${index}-styles`);
+                localStorage.removeItem(`task-li-${index}-input-field-styles`); 
             }
             taskElement.remove();
         });
@@ -174,14 +209,7 @@ function readTodoStorage(todoStorage) {
     }
 }
 
-function applyElementStyles(element, key) {
-    const storedStyles = localStorage.getItem(key);
-    if (storedStyles) {
-        const styles = JSON.parse(storedStyles);
-        Object.assign(element.style, styles);
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    readTodoStorage(todoStorage); // Render tasks on page load
+    readTodoStorage(todoStorage); 
 });
+
