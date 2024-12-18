@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>To-Do List</title>
+        <link rel="stylesheet" href="style.css"/>
+    </head>
+    <body>
+        <script type="text/javascript" src="script.js" defer></script>
+        <div class="mainHeading">
+            <h1>To-Do List</h1>
+        </div>
+        <div class="taskAdder">
+            <form method="post" action="submit" id="taskForm">
+                <input type="text" id="userTaskInput" name="userTaskInput" placeholder="Add new task">
+                <button type="submit" id="addTaskButton"></button>
+            </form>
+        </div>
+        <div class="taskListContainer">
+            <h5 id="alerter">Please enter a task</h5>
+            <h2 id="heading"><u>Your Tasks</u></h2>
+            <ul id="taskList" class="taskList"></ul>
+        </div>
+    </body>
+</html>
